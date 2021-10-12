@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int argv, char** argc){
     if((argv != 3) && (argv != 4)){
-        cout << "Please provide 2 to 3 file names" << endl;
+        cout << "Please provide 2 or 3 file names" << endl;
         return 1;
     }
     ifstream fileConstants(argc[1]);
@@ -46,15 +46,9 @@ int main(int argv, char** argc){
     
     h.print();
 
-    if(argv == 4){
         cout << "Queries" << endl;
-        string line;
-        getline(fileConstants,line);
-        int p = stoi(line);
-        getline(fileConstants,line);
-        int c = stoi(line);
         h.query(fileQuery,p,c);
         fileQuery.close();
-    }
+    
     return 0;
 }

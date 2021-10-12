@@ -15,6 +15,7 @@ using namespace std;
 struct Cells{
         unsigned long int numWords = 0;
         string *words = nullptr;   
+        vector<string> list;
 };
 
 class HashTable {

@@ -39,11 +39,11 @@ using namespace std;
                         if(table[index].words[i] == entry){
                             //duplicates
                             table[index].numWords--;
+                            total--;
                             break;
                         }
                         if(table[index].words[i] == ""){
                             table[index].words[i] = entry;
-                            total++;
                             break;
                         }
                     }
@@ -93,13 +93,20 @@ using namespace std;
 
 
         int HashTable::hash(string s, int p, int c) const{
-            long int index = (char)s[0] % p;
+            unsigned long long h = 0;
+            unsigned long long m;
 
-            for(int i = 1; i < s.length(); i++){
-                index = ((index*c) + (char)s[i]) % p;
+            for(unsigned long i = 0; i < s.size(); i++){
+                m = 1;
+                for(unsigned long j = 0; j < i; j++){
+                    m = (m*c) % p;
+                }
+                m = (s[i]*m) % p;
+                h += m;
+                h = h % p;
             }
 
-            return index % p;
+            return h;
             /*int h = 0;
 
             for(int i = 0; i < s.size(); i++){
@@ -205,9 +212,9 @@ using namespace std;
                 cout << "x=" << i << " : b=" << b << endl;
             }
             cout << "Keys in most populated bucket:";
-            if(p == 0 || total == 0){
+            /*if(p == 0 || total == 0){
                 return;
-            }
+            }*/
             for(int i = 0; i < table[indexMax].numWords; i++){
                 cout << " " <<  table[indexMax].words[i];
             }
@@ -217,16 +224,17 @@ using namespace std;
             string line;
             int index;
 
-
             while (getline(fileQuery,line)){
                 index = hash(line, p, c);
                 for(int i = 0; i < table[index].numWords; i++){
                     if(table[index].words[i] == line){
                         cout << "Key \"" << line << "\" exists at (" << index << ", " << i << ")." << endl;
+                        goto done;
                     }
                 }
+                cout << "Key \"" << line << "\" does not exist." << endl;
+                done:;
             }
-            //cout << "Key " << line << "does not exist." << endl;
         }
         
 
