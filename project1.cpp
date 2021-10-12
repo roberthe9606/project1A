@@ -9,8 +9,8 @@ int main(int argv, char** argc){
         cout << "Please provide 2 to 3 file names" << endl;
         return 1;
     }
-    ifstream fileConstants (argc[1]);
-    ifstream fileDataset (argc[2]);
+    ifstream fileConstants(argc[1]);
+    ifstream fileDataset(argc[2]);
     ifstream fileQuery;
     if(fileConstants.fail()){
         cout << "Couldn't open file" << argc[1] <<  endl;
@@ -34,4 +34,12 @@ int main(int argv, char** argc){
     h.store(fileDataset);
     fileDataset.close();
     
+    h.print();
+
+    if(argv == 4){
+        cout << endl;
+        h.query(fileQuery);
+        fileQuery.close();
+    }
+    return 0;
 }

@@ -2,33 +2,32 @@
 #define HASH_H
 
 #include <iostream>
+#include <stdio.h>
+#include <math.h>
+#include <cstring>
+#include <fstream>
+#include <list>
 #include <vector>
+
+
 using namespace std;
 
 struct HashBucket{
     int numWords = 0;
-    string listWords;
+    string *word = nullptr;
 };
 
 class HashTable{
     public:
-        HashTable(ifstream& fileConstants){
-            string line;
-            getline(fileConstants,line);
-            p = stoi(line);
-            getline(fileConstants,line);
-            c = stoi(line);
-            if(p!=0){
-                table = new HashBucket(p);
-            }
-        };
+        HashTable(ifstream& fileConstants);
+        ~HashTable();
+        double hash(string s,int c, int p) const;
+        void store(ifstream& fileDataset);
+        void print() const;
+        //void query(ifstream& fileQuery) const;
+        bool check(string* table, string word, int size);
+        bool find(string** table, string key, int c, int p, long* sizeTable);
 
-        ~HashTable(){
-            for(int i = 0;i < p: i++){
-                delete[] table[i].listWords;
-            }
-            delete[] table;
-        }
 
  /*       double convert(string s, int n){
             double num;
@@ -63,7 +62,7 @@ class HashTable{
         return true;
     }
 */
-
+/*
         bool isEmpty() const{
             int sum = 0;
             for(int i = 0; i < hashgroups; i++){
@@ -73,7 +72,7 @@ class HashTable{
                 return true;
             }
             return false;
-        }
+        }*/
 
         /*int getInt(string s){
             return arr[s];
@@ -83,72 +82,12 @@ class HashTable{
             return key;
         }*/
 
-        double hash(string s) const{
-            int h = 0;
-            string a(s);
-            vector<char> v(s.begin(),s.end());
-
-            for (int i : v){
-                h = (copy(i)*pow(c, x));
-            }
-            h = h % hashgroups;
-            return h;
-        }
-
 
         /*int hashFunction(int key){
             return key % hashgroups;
         }*/
 
 
-        void store(ifstream& fileDataset){
-            string line;
-            int index;
-
-            if(p == 0){
-                while(getline(fileDataset,line) && (line.length()>0)){
-                    totalNumWordsInput++;
-                }
-            return;
-            }
-            while(getline(fileDataset,line) && (line.length() > 0)){
-                index = hash(line);
-                table[index].numWords++;
-                totalNumWordsInput++;
-            }
-            fileDataset.clear();
-            fileDataset.seekg(0);
-
-            while(getline(fileDataset,line) && (line.length() > 0)){
-                index = hash(line);
-                if(table[index].listWords == nullptr){
-                    table[index].listWords = new string(table[index].numWords);
-                    table[index].listWords[0] = line;
-                    totalNumWordsTable++;
-                }
-                else{
-                    for(int i = 0; i < table[index].numWords; i++){
-                        if(table[index].listWords[i] == line){
-                            table[index].numWords--;
-                            break;
-                        }
-                        if(table[index].listWords[i] == ""){
-                            table[index].listWords[i] == line;
-                            totalNumWordsTable++;
-                            break;
-                        }
-                    }
-                }
-            }
-                for(index = 0; index < p; index++){
-                    if((table[index].numWords) > maxCollisions){
-                        maxCollisions = table[index].numWords;
-                        indexMax = index;
-                    }
-                }
-                if(maxCollisions != 0){
-                    maxCollisions--;
-                }
         
             /*
             for (auto entry : fileDataset){
@@ -160,7 +99,7 @@ class HashTable{
                     linprob(i,entry);
                 }
             }*/
-        }
+        
 
 /*        void linprob(int i, map<string,int> data){
             if(isEmpty(arr[(i+1)%hashgroups])){
@@ -171,33 +110,7 @@ class HashTable{
             }
         }
 */
-        void print() const{
-            cout << "Size of input: " <<  totalNumWordsInput << endl;
-            cout << "Number of words in table: " << totalNumWordsTable << endl;
-            cout << "Primary array size: "<< p << endl;
-            cout << "Maximum number of collisions in a hashbucket: " << maxCollisions << endl;
 
-        }
-
-        void query(ifstream& fileQuery) const{
-            string line;
-            int index;
-
-            cout << "Queries" << endl;
-
-            while (getline(fileQuery,line) && (line.length() > 0)){
-                if(p == 0){
-                    cout << "Key" << line << "does not exist " 
-                }
-                index = hash(line);
-                for(int i = 0; i < table[index].numWords; i++){
-                    if(table[index].listWords[i] == line){
-                        cout << "Key " << line << "exists at (" << index << ", " << i << ")." << endl;
-                    }
-                }
-            }
-            cout << "Key " << line << "does not exist." << endl;
-        }
 
     private:
         /*list<pair<int, string>> arr[hashgroups];
@@ -209,6 +122,8 @@ class HashTable{
         int maxCollisions = 0;
         int indexMax;
         HashBucket *table;
+        int numWords = 0;
+        string *word = nullptr;
         
 };
 #endif

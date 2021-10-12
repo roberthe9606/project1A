@@ -4,7 +4,7 @@ CXX=clang++
 CXXFLAGS= -g -O3 -std=c++14 
 BINARIES = project1
 
-all: ${BINARIES}
+all: clean ${BINARIES}
 
 project1: project1.o hashtable.o
 			${CXX} $^ -o $@
